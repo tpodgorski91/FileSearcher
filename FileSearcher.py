@@ -1,7 +1,5 @@
 import glob, subprocess
 
-#TODO: run program automatically
-
 files=[]
 while not files:
     print("Please enter txt file name")
