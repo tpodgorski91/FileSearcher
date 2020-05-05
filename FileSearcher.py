@@ -1,10 +1,10 @@
 import glob, subprocess
 
-files=[]
+files = []
 while not files:
     print("Please enter txt file name")
     filename = input()
-    files = glob.glob("D:\\*\\*" + filename + "*.txt")
+    files = glob.glob(f"D:\\*\\*{filename}*.txt")
 
 for file in range(len(files)):
     print(str(file) + "  " + files[file])
