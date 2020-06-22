@@ -1,4 +1,6 @@
-import glob, subprocess
+import glob
+import subprocess
+
 
 files = []
 while not files:
@@ -18,5 +20,5 @@ try:
         number = int(input())
 except IndexError:
     print("Index is out of range")
-
+print(files[number])
 subprocess.call([r"notepad.exe", files[number]])

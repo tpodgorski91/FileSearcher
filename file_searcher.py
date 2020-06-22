@@ -52,7 +52,7 @@ if __name__ == '__main__':
     print("Please provide either entire or some portion of file name")
     file_name = input()
     p = sorted(Path(f"{user_drive}:/").glob(f"*/*{file_name}*.txt"))
+    p = str(p)
+    p = p[14:-3]
     print(p)
     subprocess.call([r"notepad.exe", p])
-    # f = open(p[0])
-    # print(f.read())
