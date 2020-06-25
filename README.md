@@ -1,4 +1,4 @@
-# FileSearcher
+# file_searcher
 
 The goal is to open file in .txt, .jpg format based on either whole or part of name provided.
 

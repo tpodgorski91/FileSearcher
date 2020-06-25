@@ -42,17 +42,29 @@ def list_drives_windows() -> List[str]:
 
     return drives
 
-# TODO:how to make WindowsPath subprocess.call method  readable
+
+def get_file(drive, name):
+    """
+
+    :param drive:
+    :param name:
+    :return:
+    """
+    file_path = sorted(Path(f"{drive}:/").glob(f"*/*{name}*"))
+    file_path = str(file_path)
+    if platform.system() == 'Windows':
+        file_path = file_path[14:-3]
+    else:
+        file_path = file_path[11:-3]
+    return file_path
+
+# TODO: how to open file contains a text on different OS?
 
 
 if __name__ == '__main__':
-    print(list_drives())
+
     print("Please type from the list above drive where file is stored")
     user_drive = input()
     print("Please provide either entire or some portion of file name")
     file_name = input()
-    p = sorted(Path(f"{user_drive}:/").glob(f"*/*{file_name}*.txt"))
-    p = str(p)
-    p = p[14:-3]
-    print(p)
-    subprocess.call([r"notepad.exe", p])
+    subprocess.call([r'notepad.exe', get_file(user_drive, file_name)])
