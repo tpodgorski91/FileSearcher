@@ -53,24 +53,24 @@ def list_drives() -> List[str]:
     return drives
 
 
+# TODO: print exact file index from the received list, add header : "index file path"
 def get_file(drive, name):
-    import platform
     """
-
     :param drive:
     :param name:
-    :return:
+    :return: print list of files that names are matching with pattern
     """
-    file_path = sorted(Path(f"{drive}/").glob(f"*/*{name}*"))
-    # file_path = sorted(Path(f"{drive}").glob(f"*/*{name}*"))
-    file_path = str(file_path)
-    if platform.system() == 'Windows':
-        file_path = file_path[14:-3]
-    else:
-        file_path = file_path[11:-3]
-    return file_path
 
-# TODO: how to open file contains a text on different OS?
+    file_path = sorted(Path(drive).rglob(f'*{name}*.*'))
+    for file in file_path:
+        print(file_path.index(file), file)
+    # file_path = sorted(Path(f"{drive}").glob(f"*/*{name}*"))
+    # file_path = str(file_path)
+    # if platform.system() == 'Windows':
+    #     file_path = file_path[14:-3]
+    # else:
+    #     file_path = file_path[11:-3]
+    # return file_path
 
 
 def get_txt_editor():
@@ -93,5 +93,5 @@ if __name__ == '__main__':
     user_drive = input()
     print("Please provide either entire or portion of text file name.")
     file_name = input()
-
-    subprocess.call([get_txt_editor(), get_file(user_drive, file_name)])
+    get_file(user_drive, file_name)
+    # subprocess.call([get_txt_editor(), get_file(user_drive, file_name)])
