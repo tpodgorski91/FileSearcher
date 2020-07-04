@@ -15,35 +15,60 @@ def list_drives() -> List[str]:
     return drives
 
 
-def get_file(drive, name):
-    """
-    :param drive:
-    :param name:
-    :return: print list of files that names are matching with pattern
-    """
+def get_file():
+
+    drive_name, file_name = user_input()
     files_list = []
-    file_path = sorted(Path(drive).rglob(f'*{name}*.*'))
+    file_path = sorted(Path(drive_name).rglob(f'*{file_name}*.*'))
     for file_loc in file_path:
         print(file_path.index(file_loc), file_loc)
         file_loc = str(file_loc)
         files_list.append(file_loc)
-    print("Choose index.")
-    list_index = int(input())
-    if platform.system() == "Windows":
-        os.startfile(file_path[list_index])
-    elif platform.system() == "Darwin":
-        subprocess.Popen(["open", file_path[list_index]])
+    if len(files_list) == 0:
+        print("Nothing found."
+              "\nPlease consider your choice and try again.")
+        list_drives()
+        get_file()
     else:
-        subprocess.Popen(["xdg-open", file_path[list_index]])
-    return file_path[list_index]
+        try:
+            print("Choose index.")
+            list_index = int(input())
+            if platform.system() == "Windows":
+                os.startfile(file_path[list_index])
+            elif platform.system() == "Darwin":
+                subprocess.Popen(["open", file_path[list_index]])
+            else:
+                subprocess.Popen(["xdg-open", file_path[list_index]])
+            return file_path[list_index]
+        except IndexError:
+            print("Index out of scope."
+                  "\nPlease try again.")
+# TODO: maybe create choose_index function to enable choosing option again
+
+
+def user_input():
+    print("Please choose from above one valid drive where text file is stored and type it below."
+          "\nChoice should be exactly the same as one from above.")
+    drive_name = input()
+    print("Please provide either entire or portion of text file name.")
+    file_name = input()
+    return drive_name, file_name
+
+
+# def choose_index():
+#     print("Choose index.")
+#     list_index = int(input())
+#     if platform.system() == "Windows":
+#         os.startfile(file_path[list_index])
+#     elif platform.system() == "Darwin":
+#         subprocess.Popen(["open", file_path[list_index]])
+#     else:
+#         subprocess.Popen(["xdg-open", file_path[list_index]])
+#     return file_path[list_index]
 
 
 if __name__ == '__main__':
 
     list_drives()
-    print("Please choose from above one valid drive where text file is stored and type it below."
-          "\nChoice should be exactly the same as one from above.")
-    user_drive = input()
-    print("Please provide either entire or portion of text file name.")
-    file_name = input()
-    get_file(user_drive, file_name)
+    get_file()
+
