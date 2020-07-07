@@ -1,22 +1,71 @@
-import glob, subprocess
+from pathlib import Path
+from typing import List
+import platform
+import os
+import subprocess
 
-files=[]
-while not files:
-    print("Please enter txt file name")
-    filename = input()
-    files = glob.glob("D:\\*\\*" + filename + "*.txt")
 
-for file in range(len(files)):
-    print(str(file) + "  " + files[file])
+def list_drives() -> List[str]:
+    """
 
-print("Please enter row index")
-number = int(input())
+    :return: list of user drives
+    """
+    import psutil
+    drives = [
+        partition.device for partition in psutil.disk_partitions()
+    ]
+    for drive in drives:
+        print(drive)
+    return drives
 
-try:
-    while number < 0 or number > len(files)-1:
-        print("Plz enter index no higher than " + str(len(files) - 1))
-        number = int(input())
-except IndexError:
-    print("Index is out of range")
 
-subprocess.call([r"notepad.exe", files[number]])
+def user_input():
+    """
+
+    :return: drive name and file name
+    """
+    print("Please choose from above one valid drive where text file is stored and type it below."
+          "\nChoice should be exactly the same as one from above.")
+    drive_name = input()
+    print("Please provide either entire or portion of text file name.")
+    file_name = input()
+    files_list = []
+    print(drive_name, file_name)
+    file_path = sorted(Path(drive_name).rglob(f'*{file_name}*.*'))
+    for file_loc in file_path:
+        print(file_path.index(file_loc), file_loc)
+        file_loc = str(file_loc)
+        files_list.append(file_loc)
+    if len(files_list) == 0:
+        print("Nothing found."
+              "\nPlease consider your choice and try again.")
+        user_input()
+    return files_list
+
+
+def choose_index():
+    try:
+        print("Choose index.")
+        print(look_for_file)
+        list_index = int(input())
+        if platform.system() == "Windows":
+            os.startfile(look_for_file[list_index])
+        elif platform.system() == "Darwin":
+            subprocess.Popen(["open", look_for_file[list_index]])
+        else:
+            subprocess.Popen(["xdg-open", look_for_file[list_index]])
+        return look_for_file[list_index]
+    except IndexError:
+        print("Index out of scope."
+              "\nPlease try again.")
+        choose_index()
+    except ValueError:
+        print("Index out of scope."
+            "\nPlease try again.")
+        choose_index()
+
+
+if __name__ == '__main__':
+    list_drives()
+    look_for_file = user_input()
+    choose_index()
