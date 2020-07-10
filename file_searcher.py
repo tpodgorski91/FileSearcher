@@ -69,14 +69,16 @@ def user_input():
 
 
 def choose_index():
+    # TODO: how to avoid when user input is negative number
     """
 
     :return: opens chosen file from the list base on list index
     """
     try:
-        print("Choose index.")
+        print("Choose index number corresponding to the file.")
         # print(look_for_file)
         list_index = int(input())
+        print(look_for_file[list_index])
         if platform.system() == "Windows":
             os.startfile(look_for_file[list_index])
         elif platform.system() == "Darwin":
@@ -85,12 +87,15 @@ def choose_index():
             subprocess.Popen(["xdg-open", look_for_file[list_index]])
         return look_for_file[list_index]
     except IndexError:
-        print("Index out of scope."
-              "\nPlease try again.")
+        print(f"Incorrect index number selected. Number should be between 0 and {(len(look_for_file))- 1}"
+              "\nPlease try again."
+              "\n")
+
         choose_index()
     except ValueError:
-        print("Index out of scope."
-            "\nPlease try again.")
+        print("Selected index number is not a number."
+              "\nPlease try again."
+              "\n")
         choose_index()
 
 
