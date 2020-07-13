@@ -43,8 +43,6 @@ def list_drives_win_mac() -> List[str]:
         print(drive)
     return drives
 
-#dub dub
-
 
 def user_input():
     """
