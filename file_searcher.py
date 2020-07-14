@@ -16,7 +16,6 @@ def list_drives():
 
 def list_drives_linux() -> List[str]:
     """
-
     :return: list of user drives on Linux
     """
     import psutil
@@ -30,7 +29,6 @@ def list_drives_linux() -> List[str]:
 
 def list_drives_win_mac() -> List[str]:
     """
-
     :return: list of user drives on either Windows or macOS
     """
     import psutil
@@ -44,7 +42,6 @@ def list_drives_win_mac() -> List[str]:
 
 def user_input():
     """
-
     :return: list of files and search pattern match
     """
     print("Please choose from above one valid drive where file is stored and type it below."
@@ -69,7 +66,6 @@ def user_input():
 def choose_index():
     # TODO: how to avoid when user input is negative number
     """
-
     :return: opens chosen file from the list base on list index
     """
     try:
