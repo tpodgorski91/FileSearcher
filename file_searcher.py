@@ -11,8 +11,7 @@ def list_drives():
         "Darwin": list_drives_win_mac,
         "Windows": list_drives_win_mac,
     }[system_name]
-    drives = method()
-    return drives
+    return method()
 
 
 def list_drives_linux() -> List[str]:
