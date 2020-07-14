@@ -63,13 +63,11 @@ def user_input():
 
 
 def choose_index():
-    # TODO: how to avoid when user input is negative number
     """
     :return: opens chosen file from the list base on list index
     """
     try:
         print("Choose index number corresponding to the file.")
-        # print(look_for_file)
         list_index = int(input())
         print(look_for_file[list_index])
         if platform.system() == "Windows":
