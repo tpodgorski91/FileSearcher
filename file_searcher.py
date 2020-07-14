@@ -51,8 +51,8 @@ def user_input():
     file_name = input(msg2)
     files_list = []
     file_path = sorted(Path(drive_name).rglob(f'*{file_name}*.*'))
-    for file_loc in file_path:
-        print(file_path.index(file_loc), file_loc)
+    for index, file_loc in enumerate(file_path):
+        print(index, file_loc)
         file_loc = str(file_loc)
         files_list.append(file_loc)
     if len(files_list) == 0:
