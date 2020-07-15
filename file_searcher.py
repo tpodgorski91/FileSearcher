@@ -1,8 +1,8 @@
+import os
+import platform
+import subprocess
 from pathlib import Path
 from typing import List
-import platform
-import os
-import subprocess
 
 
 def list_drives():
@@ -12,13 +12,11 @@ def list_drives():
         "Darwin": list_drives_win_mac,
         "Windows": list_drives_win_mac,
     }[system_name]
-    drives = method()
-    return drives
+    return method()
 
 
 def list_drives_linux() -> List[str]:
     """
-
     :return: list of user drives on Linux
     """
     import psutil
@@ -32,7 +30,6 @@ def list_drives_linux() -> List[str]:
 
 def list_drives_win_mac() -> List[str]:
     """
-
     :return: list of user drives on either Windows or macOS
     """
     import psutil
@@ -46,19 +43,17 @@ def list_drives_win_mac() -> List[str]:
 
 def user_input():
     """
-
     :return: list of files and search pattern match
     """
-    print("Please choose from above one valid drive where file is stored and type it below."
-          "\nChoice should be exactly the same as one from above.")
-    drive_name = input()
-    print("Please provide either entire or portion of file name.")
-    file_name = input()
+    msg1 = "Please choose from above one valid drive where file is stored and type it below." \
+           "\nChoice should be exactly the same as one from above."
+    drive_name = input(msg1)
+    msg2 = "Please provide either entire or portion of file name."
+    file_name = input(msg2)
     files_list = []
-    # print(drive_name, file_name)
     file_path = sorted(Path(drive_name).rglob(f'*{file_name}*.*'))
-    for file_loc in file_path:
-        print(file_path.index(file_loc), file_loc)
+    for index, file_loc in enumerate(file_path):
+        print(index, file_loc)
         file_loc = str(file_loc)
         files_list.append(file_loc)
     if len(files_list) == 0:
@@ -68,40 +63,35 @@ def user_input():
     return files_list
 
 
+def open_file_from_list(index):
+    if platform.system() == "Windows":
+        os.startfile(look_for_file[index])
+    elif platform.system() == "Darwin":
+        subprocess.Popen(["open", look_for_file[index]])
+    else:
+        subprocess.Popen(["xdg-open", look_for_file[index]])
+    return look_for_file[index]
+
+
 def choose_index():
-
     """
-
     :return: opens chosen file from the list base on list index
     """
     try:
-        print("Choose index number corresponding to the file.")
-        # print(look_for_file)
-        list_index = int(input())
-        if list_index < 0:
-            print("Index number should equals 0 and higher."
+        list_index = int(input("Choose index number corresponding to the file.\n"))
+        while list_index < 0:
+            print("Index number should equals 0 or higher."
                   "\nPlease try again.")
-            choose_index()
+            list_index = int(input("Choose index number corresponding to the file.\n"))
         else:
-            print(look_for_file[list_index])
-            if platform.system() == "Windows":
-                os.startfile(look_for_file[list_index])
-            elif platform.system() == "Darwin":
-                subprocess.Popen(["open", look_for_file[list_index]])
-            else:
-                subprocess.Popen(["xdg-open", look_for_file[list_index]])
-            return look_for_file[list_index]
+            open_file_from_list(list_index)
     except IndexError:
         print(f"Incorrect index number selected. Number should be between 0 and {(len(look_for_file))- 1}"
-              "\nPlease try again."
-              "\n")
-
-        choose_index()
+              "\nPlease try again.")
     except ValueError:
         print("Selected index number is not a number."
-              "\nPlease try again."
-              "\n")
-        choose_index()
+              "\nPlease try again.")
+    choose_index()
 
 
 if __name__ == '__main__':
