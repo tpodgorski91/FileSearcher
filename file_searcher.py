@@ -62,32 +62,35 @@ def user_input():
     return files_list
 
 
+def open_file_from_list(index):
+    if platform.system() == "Windows":
+        os.startfile(look_for_file[index])
+    elif platform.system() == "Darwin":
+        subprocess.Popen(["open", look_for_file[index]])
+    else:
+        subprocess.Popen(["xdg-open", look_for_file[index]])
+    return look_for_file[index]
+
+
 def choose_index():
     """
     :return: opens chosen file from the list base on list index
     """
     try:
-        print("Choose index number corresponding to the file.")
-        list_index = int(input())
-        print(look_for_file[list_index])
-        if platform.system() == "Windows":
-            os.startfile(look_for_file[list_index])
-        elif platform.system() == "Darwin":
-            subprocess.Popen(["open", look_for_file[list_index]])
+        list_index = int(input("Choose index number corresponding to the file.\n"))
+        while list_index < 0:
+            print("Index number should equals 0 or higher."
+                  "\nPlease try again.")
+            list_index = int(input("Choose index number corresponding to the file.\n"))
         else:
-            subprocess.Popen(["xdg-open", look_for_file[list_index]])
-        return look_for_file[list_index]
+            open_file_from_list(list_index)
     except IndexError:
         print(f"Incorrect index number selected. Number should be between 0 and {(len(look_for_file))- 1}"
-              "\nPlease try again."
-              "\n")
-
-        choose_index()
+              "\nPlease try again.")
     except ValueError:
         print("Selected index number is not a number."
-              "\nPlease try again."
-              "\n")
-        choose_index()
+              "\nPlease try again.")
+    choose_index()
 
 
 if __name__ == '__main__':
