@@ -19,12 +19,9 @@ def list_drives_linux() -> List[str]:
     """
     :return: list of user drives on Linux
     """
-    import psutil
     drives = [
         partition.mountpoint for partition in psutil.disk_partitions()
     ]
-    for drive in drives:
-        print(drive)
     return drives
 
 
@@ -32,13 +29,16 @@ def list_drives_win_mac() -> List[str]:
     """
     :return: list of user drives on either Windows or macOS
     """
-    import psutil
     drives = [
         partition.device for partition in psutil.disk_partitions()
     ]
+    return drives
+
+
+def show_drives_list():
+    drives = list_drives()
     for drive in drives:
         print(drive)
-    return drives
 
 
 def user_input():
@@ -95,7 +95,7 @@ def choose_index():
 
 
 if __name__ == '__main__':
-    list_drives()
+    show_drives_list()
     look_for_file = user_input()
     choose_index()
     
