@@ -86,7 +86,7 @@ def choose_index():
         else:
             open_file_from_list(list_index)
     except IndexError:
-        print(f"Incorrect index number selected. Number should be between 0 and {(len(look_for_file))- 1}"
+        print(f"Incorrect index number selected. Number should be between 0 and {(len(look_for_file)) - 1}"
               "\nPlease try again.")
     except ValueError:
         print("Selected index number is not a number."
