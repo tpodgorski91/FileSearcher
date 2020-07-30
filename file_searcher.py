@@ -45,11 +45,9 @@ def user_input():
     """
     :return: list of files and search pattern match
     """
-    msg1 = "Please choose from above one valid drive where file is stored and type it below."
-            "\nChoice should be exactly the same as one from above."
-    drive_name = input(msg1)
-    msg2 = "Please provide either entire or portion of file name."
-    file_name = input(msg2)
+    drive_name = input("Please choose from above one valid drive where file is stored and type it below."
+            "\nChoice should be exactly the same as one from above.")
+    file_name = input("Please provide either entire or portion of file name.")
     files_list = []
     file_path = sorted(Path(drive_name).rglob(f'*{file_name}*.*'))
     for index, file_loc in enumerate(file_path):
