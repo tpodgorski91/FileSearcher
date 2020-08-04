@@ -1,5 +1,6 @@
 import os
 import platform
+import psutil
 import subprocess
 from pathlib import Path
 from typing import List
@@ -36,8 +37,7 @@ def list_drives_win_mac() -> List[str]:
 
 
 def show_drives_list():
-    drives = list_drives()
-    for drive in drives:
+    for drive in list_drives():
         print(drive)
 
 
@@ -93,6 +93,6 @@ def choose_index():
 
 if __name__ == '__main__':
     show_drives_list()
-    look_for_file = user_input()
+    user_input()
     choose_index()
     
