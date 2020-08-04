@@ -68,7 +68,6 @@ def open_file_from_list(index):
         subprocess.Popen(["open", look_for_file[index]])
     else:
         subprocess.Popen(["xdg-open", look_for_file[index]])
-    return
 
 
 def choose_index():
