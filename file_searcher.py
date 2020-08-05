@@ -87,7 +87,10 @@ def choose_index():
             print(f"Incorrect index number selected. Number should be between 0 and {(len(look_for_file)) - 1}"
                     "\nPlease try again.")
         else:
-            print("Something went wrong please try again")
+            print("Something went wrong please try again"
+                  "\n")
+            show_drives_list()
+            user_input()
         choose_index()
     except ValueError:
         print("Selected index number is not a number."
