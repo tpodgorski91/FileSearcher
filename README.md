@@ -15,4 +15,4 @@ file name (may be only portion of name)
 3. User chooses specific file from the list of files that match the name (pattern).
     index
 4. Program opens file.
-    dictionary   
+    dictionary
