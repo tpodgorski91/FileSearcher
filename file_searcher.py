@@ -46,7 +46,7 @@ def user_input():
     :return: list of files and search pattern match
     """
     drive_name = input("Please choose from above one valid drive where file is stored and type it below."
-            "\nChoice should be exactly the same as one from above.")
+                        "\nChoice should be exactly the same as one from above.")
     file_name = input("Please provide either entire or portion of file name.")
     files_list = []
     file_path = sorted(Path(drive_name).rglob(f'*{file_name}*.*'))
@@ -83,16 +83,19 @@ def choose_index():
         else:
             open_file_from_list(list_index)
     except IndexError:
-        print(f"Incorrect index number selected. Number should be between 0 and {(len(look_for_file)) - 1}"
-              "\nPlease try again.")
+        if len(look_for_file) != 0:
+            print(f"Incorrect index number selected. Number should be between 0 and {(len(look_for_file)) - 1}"
+                    "\nPlease try again.")
+        else:
+            print("Something went wrong please try again")
+        choose_index()
     except ValueError:
         print("Selected index number is not a number."
               "\nPlease try again.")
-    choose_index()
+        choose_index()
 
 
 if __name__ == '__main__':
     show_drives_list()
-    user_input()
+    look_for_file = user_input()
     choose_index()
-    
