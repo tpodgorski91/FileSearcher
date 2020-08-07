@@ -41,23 +41,27 @@ def show_drives_list():
         print(drive)
 
 
-def user_input():
+def file_pattern():
     """
     :return: list of files and search pattern match
     """
     drive_name = input("Please choose from above one valid drive where file is stored and type it below."
                         "\nChoice should be exactly the same as one from above.")
     file_name = input("Please provide either entire or portion of file name.")
+    result = sorted(Path(drive_name).rglob(f'*{file_name}*.*'))
+    return result
+
+
+def list_files():
     files_list = []
-    file_path = sorted(Path(drive_name).rglob(f'*{file_name}*.*'))
-    for index, file_loc in enumerate(file_path):
+    for index, file_loc in enumerate(file_pattern()):
         print(index, file_loc)
         file_loc = str(file_loc)
         files_list.append(file_loc)
     if len(files_list) == 0:
         print("Nothing found."
               "\nPlease consider your choice and try again.")
-        user_input()
+        file_pattern()
     return files_list
 
 
@@ -90,7 +94,7 @@ def choose_index():
             print("Something went wrong please try again"
                   "\n")
             show_drives_list()
-            user_input()
+            file_pattern()
         choose_index()
     except ValueError:
         print("Selected index number is not a number."
@@ -100,5 +104,5 @@ def choose_index():
 
 if __name__ == '__main__':
     show_drives_list()
-    look_for_file = user_input()
+    look_for_file = list_files()
     choose_index()
