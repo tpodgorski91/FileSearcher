@@ -10,8 +10,8 @@ def list_drives():
     system_name = platform.system()
     method = {
         "Linux": list_drives_linux,
-        "Darwin": list_drives_win_mac,
-        "Windows": list_drives_win_mac,
+        "Darwin": list_drives_mac,
+        "Windows": list_drives_win,
     }[system_name]
     return method()
 
@@ -26,7 +26,18 @@ def list_drives_linux() -> List[str]:
     return drives
 
 
-def list_drives_win_mac() -> List[str]:
+def list_drives_mac() -> List[str]:
+    """
+    :return: list of user drives on either Windows or macOS
+    """
+    drives = [
+        partition.device for partition in psutil.disk_partitions()
+    ]
+    return drives
+
+
+def list_drives_win() -> List[str]:
+    import psutil
     """
     :return: list of user drives on either Windows or macOS
     """
@@ -37,18 +48,28 @@ def list_drives_win_mac() -> List[str]:
 
 
 def show_drives_list():
-    for drive in list_drives():
-        print(drive)
+    if platform.system() == "Windows" and len(list_drives()) == 1:
+        exclude = {'New folder', 'Windows', 'Desktop', 'Program Files', 'Documents and Settings', 'Program Files (x86)',
+                   'ProgramData', 'Quarantine', 'Recovery', 'TEMP'}
+        for root, dirs, files in os.walk('C:\\', topdown=True):
+            dirs[:] = [d for d in dirs if d not in exclude]
+            return dirs
+    else:
+        for drive in list_drives():
+            return drive
 
 
 def file_pattern():
     """
     :return: list of files and search pattern match
     """
-    drive_name = input("Please choose from above one valid drive where file is stored and type it below."
+    dirname = input("Please choose from above one valid directory where file is stored and type it below."
                         "\nChoice should be exactly the same as one from above.")
     file_name = input("Please provide either entire or portion of file name.")
-    result = sorted(Path(drive_name).rglob(f'*{file_name}*.*'))
+    if platform.system() == "Windows" and len(list_drives()) == 1:
+        result = sorted(Path(f"C:\\{dirname}").rglob(f'*{file_name}*.*'))
+    else:
+        result = sorted(Path(dirname).rglob(f'*{file_name}*.*'))
     return result
 
 
@@ -81,8 +102,7 @@ def choose_index():
     try:
         list_index = int(input("Choose index number corresponding to the file.\n"))
         while list_index < 0:
-            print("Index number should equals 0 or higher."
-                  "\nPlease try again.")
+            print("Index number should equals 0 or higher.\nPlease try again.")
             list_index = int(input("Choose index number corresponding to the file.\n"))
         else:
             open_file_from_list(list_index)
@@ -103,6 +123,6 @@ def choose_index():
 
 
 if __name__ == '__main__':
-    show_drives_list()
+    print(show_drives_list())
     look_for_file = list_files()
     choose_index()
