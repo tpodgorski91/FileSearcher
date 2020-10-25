@@ -56,7 +56,7 @@ def show_drives_list():
             return dirs
     else:
         for drive in list_drives():
-            return drive
+            print(drive)
 
 
 def file_pattern():
